@@ -38,7 +38,6 @@ class Backend {
     ),
     Email(
       id: 164,
-      read: true,
       from: 'machine@code.com',
       subject: 'Machine code',
       dateTime: DateTime(2020, 10, 11, 16, 14),

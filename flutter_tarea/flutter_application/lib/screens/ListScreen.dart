@@ -4,6 +4,8 @@ import '../models/email.dart';
 import '../widgets/EmailWidget.dart';
 
 class ListScreen extends StatefulWidget {
+  const ListScreen({super.key});
+
   @override
   State<StatefulWidget> createState() {
     return _ListScreenPageState();
@@ -15,7 +17,7 @@ class _ListScreenPageState extends State<ListScreen> {
 
   Widget _buildEmailList() {
     return Container(
-      child: emails.length > 0
+      child: emails.isNotEmpty
           ? ListView.builder(
               itemCount: emails.length,
               itemBuilder: (BuildContext context, int index) {
@@ -23,25 +25,31 @@ class _ListScreenPageState extends State<ListScreen> {
                   onDismissed: (DismissDirection direction) {
                     setState(() {
                       emails.removeAt(index);
+                      
                     });
                   },
                   secondaryBackground: Container(
-                    child: Center(
+                    color: Colors.brown,
+                    child: const Center(
                       child: Text(
                         'Delete',
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
-                    color: Colors.brown,
                   ),
                   background: Container(),
-                  child: EmailWidget(email: emails[index]),
                   key: UniqueKey(),
                   direction: DismissDirection.endToStart,
+                  child: EmailWidget(email: emails[index], markAsRead: () {
+                    // Backend().markEmailAsRead(emails[index].id);
+                    setState(() {
+                      emails[index].read = true;
+                    });
+                  }),
                 );
               },
             )
-          : Center(child: Text('No Items')),
+          : const Center(child: Text('No Items')),
     );
   }
 
@@ -49,8 +57,8 @@ class _ListScreenPageState extends State<ListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Mail List'),
-        backgroundColor: Colors.red,
+        title: const Text('Mail List'),
+        backgroundColor: Colors.blue,
       ),
       body: _buildEmailList(),
     );

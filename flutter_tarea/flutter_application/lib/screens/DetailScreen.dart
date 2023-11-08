@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import '../models/email.dart';
 
+
 class DetailScreen extends StatelessWidget {
   final Email emails;
   const DetailScreen({Key? key, required this.emails}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Functional Programming'),
-        backgroundColor: Colors.red,
+        title: const Text('Detail Email'),
+        backgroundColor: Colors.blue,
       ),
       body: Column(
         children: <Widget>[
@@ -29,7 +31,7 @@ class DetailScreen extends StatelessWidget {
               ),
             ),
           ),
-          Row(children: const <Widget>[
+          const Row(children: <Widget>[
             Expanded(
                 child: Divider(
               color: Colors.green,
@@ -63,7 +65,7 @@ class DetailScreen extends StatelessWidget {
               ),
             ),
           ),
-          Row(children: const <Widget>[
+          const Row(children: <Widget>[
             Expanded(
                 child: Divider(
               color: Colors.green,
