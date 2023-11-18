@@ -33,6 +33,14 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  bool isLoading1 = false;
+  bool isLoading2 = false;
+  bool isLoading3 = false;
+
+  int ferrariResult = 0;
+  int hyundaiResult = 0;
+  int fisherPriceResult = 0;
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -40,43 +48,30 @@ class _MyHomePageState extends State<MyHomePage> {
       statusBarIconBrightness: Brightness.dark,
     ));
 
-    int counter = 0;
+    // int counter = 0;
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
         centerTitle: true,
       ),
-      body: AnimatedContainer(
-        duration: const Duration(seconds: 1),
+      body: Center(
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              FutureBuilder<int>(
-                future: MockApi().getFerrariInteger(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return Text(
-                      '${snapshot.data}',
-                      style: Theme.of(context).textTheme.headline4,
-                    );
-                  } else if (snapshot.hasError) {
-                    return Text(
-                      '${snapshot.error}',
-                      style: const TextStyle(fontSize: 20),
-                    );
-                  }
-                  return const CircularProgressIndicator();
-                },
-              ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.yellow,
                 ),
                 onPressed: () async {
-                  var result = await MockApi().getFerrariInteger();
-                  counter = result;
-                  print('Ferrari: $result');
+                  setState(() {
+                    isLoading1 = true;
+                  });
+                  ferrariResult = await MockApi().getFerrariInteger();
+                  print('Ferrari: $ferrariResult');
+                  setState(() {
+                    isLoading1 = false;
+                  });
                 },
                 child: const Icon(
                   Icons.bolt_rounded,
@@ -85,67 +80,74 @@ class _MyHomePageState extends State<MyHomePage> {
                   color: Colors.white,
                 ),
               ),
-              FutureBuilder<int>(
-                future: MockApi().getHyundaiInteger(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return Text(
-                      '${snapshot.data}',
-                      style: Theme.of(context).textTheme.headline4,
-                    );
-                  } else if (snapshot.hasError) {
-                    return Text(
-                      '${snapshot.error}',
-                      style: const TextStyle(fontSize: 20),
-                    );
-                  }
-                  return const CircularProgressIndicator();
-                },
+              AnimatedContainer(
+                  margin: const EdgeInsets.all(5),
+                  padding: const EdgeInsets.all(5),
+                  duration: isLoading1 ? const Duration(seconds: 1) : Duration.zero,
+                  width: isLoading1 ? MediaQuery.of(context).size.width : 0,
+                  curve: Curves.easeInOut,
+                  color: Colors.yellow),
+              Text(
+                ferrariResult.toString(),
+                style: Theme.of(context).textTheme.headlineMedium,
               ),
+              const SizedBox(height: 20),
               const SizedBox(height: 20),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.brown,
                 ),
                 onPressed: () async {
-                  var result = await MockApi().getHyundaiInteger();
                   setState(() {
-                    counter = result;
-                    print('Hyundai: $result');
+                    isLoading2 = true;
+                  });
+                  hyundaiResult = await MockApi().getHyundaiInteger();
+                  print('Hyundai: $hyundaiResult');
+                  setState(() {
+                    isLoading2 = false;
                   });
                 },
                 child: const Icon(Icons.airport_shuttle, size: 80),
               ),
-              const SizedBox(height: 20),
-              FutureBuilder<int>(
-                future: MockApi().getFisherPriceInteger(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return Text(
-                      '${snapshot.data}',
-                      style: Theme.of(context).textTheme.headline4,
-                    );
-                  } else if (snapshot.hasError) {
-                    return Text(
-                      '${snapshot.error}',
-                      style: const TextStyle(fontSize: 20),
-                    );
-                  }
-                  return const CircularProgressIndicator();
-                },
+              AnimatedContainer(
+                  margin: const EdgeInsets.all(5),
+                  padding: const EdgeInsets.all(5),
+                  duration: isLoading2 ? const Duration(seconds: 4) : Duration.zero,
+                  width: isLoading2 ? MediaQuery.of(context).size.width : 0,
+                  curve: Curves.easeInOut,
+                  color: Colors.brown),
+              Text(
+                hyundaiResult.toString(),
+                style: Theme.of(context).textTheme.headlineMedium,
               ),
+              const SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.pink,
                 ),
                 onPressed: () async {
-                  var result = await MockApi().getFisherPriceInteger();
                   setState(() {
-                    counter = result;
-                    print('Fisher Price: $result');
+                    isLoading3 = true;
+                  });
+                  fisherPriceResult = await MockApi().getFisherPriceInteger();
+                  print('Fisher Price: $fisherPriceResult');
+                  setState(() {
+                    isLoading3 = false;
                   });
                 },
                 child: const Icon(Icons.directions_run, size: 80),
+              ),
+              AnimatedContainer(
+                  margin: const EdgeInsets.all(5),
+                  padding: const EdgeInsets.all(5),
+                  duration: isLoading3 ? const Duration(seconds: 11) : Duration.zero,
+                  width: isLoading3 ? MediaQuery.of(context).size.width : 0,
+                  curve: Curves.easeInOut,
+                  color: Colors.pink),
+              Text(
+                fisherPriceResult.toString(),
+                style: Theme.of(context).textTheme.headlineMedium,
               ),
             ],
           ),
